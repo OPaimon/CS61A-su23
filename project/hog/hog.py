@@ -22,6 +22,17 @@ def roll_dice(num_rolls, dice=six_sided):
     assert num_rolls > 0, 'Must roll at least once.'
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
+    i, score = 0, 0
+    sow_sad = False
+    while i < num_rolls:
+        temp = dice()
+        if temp == 1:
+            sow_sad = True
+        score += temp
+        i+=1
+    if sow_sad:
+        score = 1
+    return score
     # END PROBLEM 1
 
 
@@ -34,6 +45,10 @@ def boar_brawl(player_score, opponent_score):
     """
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+    a = player_score % 10
+    b = opponent_score % 100 // 10
+    score = 3*abs(a-b)
+    return score or 1
     # END PROBLEM 2
 
 
@@ -52,6 +67,10 @@ def take_turn(num_rolls, player_score, opponent_score, dice=six_sided):
     assert num_rolls <= 10, 'Cannot roll more than 10 dice.'
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
+    if num_rolls:
+        return roll_dice(num_rolls,dice)
+    else:
+        return boar_brawl(player_score, opponent_score)
     # END PROBLEM 3
 
 
@@ -67,6 +86,13 @@ def hog_gcd(x, y):
     """Return the greatest common divisor between X and Y"""
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    a, b = max(x,y), min(x,y)
+    i = 1
+    if b == 0:
+        return a
+    while b * i % a != 0:
+        i += 1
+    return a // i
     # END PROBLEM 4
 
 
@@ -75,6 +101,11 @@ def fuzzy_points(score):
     """
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    gcd = hog_gcd(score, 100)
+    if gcd > 10:
+        temp = gcd % 100 //10
+        return score + 2 * temp
+    return score
     # END PROBLEM 4
 
 
@@ -84,6 +115,10 @@ def fuzzy_update(num_rolls, player_score, opponent_score, dice=six_sided):
     """
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    score = simple_update(num_rolls, player_score, opponent_score, dice)
+    score = fuzzy_points(score)
+    return score
+
     # END PROBLEM 4
 
 
